@@ -2,6 +2,8 @@
 #define __TIME_H
 #include <iostream>
 using namespace std;
+void enterTime();
+bool isValidTime(int, int, int);
 class Time
 {
 private:
@@ -11,11 +13,9 @@ private:
     size_t mTimeInSecs;
     void turnToSec();
     void convertToNormal();
-    bool isValidTime(int, int, int);
-
 public:
     Time();
-    Time(size_t , size_t , size_t );
+    Time(size_t , size_t , size_t);
     void setHours(int );
     void setMin(int );
     void setSeconds(int );
@@ -25,8 +25,8 @@ public:
     size_t getTimeInSecs() const;
     bool operator<(const Time &);
     bool operator==(const Time &);
-    void friend enterTime();
     friend Time operator-(const Time &, const Time &);
     friend std::ostream &operator<<(std::ostream &, const Time &);
+    friend std::istream &operator>>(std::istream &, Time &);
 };
 #endif

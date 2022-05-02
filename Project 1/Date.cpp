@@ -15,17 +15,17 @@ bool isValidDate(int day, int month, int year)
     {
         if (month == 1 && month == 3 && month == 5 && month == 7 && month == 8 && month == 10 && month == 12)
         {
-            return day == 31;
+            return day <= 31;
         }
         else if (month == 2)
         {
             if (isLeapYear(year))
-                return day == 29;
+                return day <= 29;
             else
-                return day == 28;
+                return day <= 28;
         }
         else
-            return day == 30;
+            return day <= 30;
     }
 }
 bool isLeapYear(int year)
@@ -81,21 +81,15 @@ int operator-(const Date &lhs, const Date &rhs)
     for (int i = 0; i < lhs.mMonth - 1; i++)
     {
         lhsDayNum += lhs.monthDays[i];
-
     }
     lhsDayNum += lhs.mDay;
     for (int i = 0; i < rhs.mMonth - 1; i++)
     {
         rhsDayNum += rhs.monthDays[i];
-
     }
     rhsDayNum += rhs.mDay;
     diff = rhsDayNum - lhsDayNum;
-    if (diff < 0)
-        // throw "The first date is a later one than the second date!";
-        return -1;
-    else
-        return (diff);
+    return diff;
     // if (isValidDate(mDay, mMonth, mYear))
     // {
     //     return *this;
@@ -137,7 +131,22 @@ int operator-(const Date &lhs, const Date &rhs)
 //         }
 //     }
 // }
+bool Date::operator==(const Date &rhs)
+{
+    return (mDay == rhs.mDay) && (mMonth == rhs.mMonth) && (mYear == rhs.mYear);
+}
+bool Date::operator>(const Date &rhs)
+{
+    if ((*this - rhs) > 0)
+        return true;
+    else
+        return false;
+}
 std::ostream &operator<<(std::ostream &out, const Date &date)
 {
     return out << date.mDay << date.mMonth << date.mYear;
+}
+std::istream &operator>>(std::istream &in, Date &date)
+{
+    return in >> date.mDay >> date.mMonth >> date.mYear;
 }

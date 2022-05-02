@@ -1,13 +1,20 @@
 #include <iostream>
+// #include "Time.h"
+// #include "Time.cpp"
+#include "Date.h"
+#include "Date.cpp"
 #include "Time.h"
 #include "Time.cpp"
+#include "Meeting.h"
+#include "Meeting.cpp"
 int main()
 {
-    Time t1(12, 25, 36);
-    Time t2(12, 00, 00);
-    Time t3;
-    t3 = t1 - t2;
-    cout << t3;
-    // cout << t3.getHours() << ":" << t3.getMins() << ":" << t3.getSeconds();
+    Time begin1(12, 25, 36);
+    Time end1(12, 00, 00);
+    Date d1(3, 2, 2012);
+    Meeting m1;
+    enterMeeting(m1);
+    writeInFile(m1);
+
     return 0;
 }

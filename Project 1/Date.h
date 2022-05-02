@@ -22,8 +22,12 @@ public:
     size_t getDay() const;
     size_t getMonth() const;
     size_t getYear() const;
-    friend int operator-(const Date &lhs, const Date &rhs);
+    bool operator==(const Date &);
+    bool operator>(const Date &);
+    friend int operator-(const Date &, const Date &);
     // Date &operator+=(const Date &other);
     friend std::ostream &operator<<(std::ostream &, const Date &);
+    friend std::istream &operator>>(std::istream &, Date &);
 };
+
 #endif

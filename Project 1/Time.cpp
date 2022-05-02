@@ -9,7 +9,7 @@ void enterTime()
     }
     Time(hours, mins, secs);
 }
-bool isValidTime(int hours, int mins, int secs)
+bool isValidTime(size_t hours, size_t mins, size_t secs)
 {
     if (hours < 0 || hours >= 24 || mins < 0 || mins >= 60 || secs < 0 || secs >= 60)
     {
@@ -43,6 +43,15 @@ Time::Time(size_t hours, size_t mins, size_t secs)
     setSeconds(secs);
     turnToSec();
 }
+Time &Time::operator=(const Time &other)
+{
+    if (isValidTime(other.mHours, other.mMins, other.mSecs))
+    {
+        mHours = other.mHours;
+        mMins = other.mMins;
+        mSecs = other.mSecs;
+    }
+}
 void Time::setHours(int hours)
 {
     mHours = hours;
@@ -71,11 +80,11 @@ size_t Time::getTimeInSecs() const
 {
     return mTimeInSecs;
 }
-bool Time::operator<(const Time &other)
+bool Time::operator<(const Time &other) const
 {
     return mTimeInSecs < other.mTimeInSecs;
 }
-bool Time::operator==(const Time &other)
+bool Time::operator==(const Time &other) const
 {
     return mTimeInSecs == other.mTimeInSecs;
 }
@@ -90,4 +99,8 @@ Time operator-(const Time &lhs, const Time &rhs)
 std::ostream &operator<<(std::ostream &out, const Time &other)
 {
     return out << other.mHours << ":" << other.mMins << ":" << other.mSecs;
+}
+std::istream &operator>>(std::istream &in, Time &other)
+{
+    return in >> other.mHours >> other.mMins >> other.mSecs;
 }
