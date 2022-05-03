@@ -2,38 +2,44 @@
 #include <fstream>
 #include "Meeting.h"
 #define MAX_SIZE 1024
-void enterMeeting(Meeting &meet)
+void printMeeting(const Meeting &other)
 {
+    cout << "Meeting:" << '\n'
+         << "Name: " << other.getName() << '\n'
+         << "Information: " << other.getMeetingInfo() << '\n'
+         << "Date: " << other.getDate() << '\n'
+         << "Begins at: " << other.getBeginTime() << '\n'
+         << "Ends at: " << other.getEndTime();
+}
+const Meeting enterMeeting()
+{
+    Meeting meet;
     char buffer[MAX_SIZE];
-    {
-        cout << "Enter the meeting name: " << '\n';
-        cin.getline(buffer, MAX_SIZE, '\n');
-        meet.setName(buffer);
-    }
-    {
-        cout << "Enter the meeting's info(Maximum length - 1024 characters):" << '\n';
-        // cin.ignore();
-        cin.getline(buffer, MAX_SIZE);
-        meet.setMeetingInfo(buffer);
-    }
-    {
-        cout << "Enter the meeting's date: " << '\n';
-        Date date;
-        cin >> date;
-        meet.setDate(date);
-    }
-    {
-        cout << "Enter the meeting's start time: " << '\n';
-        Time start;
-        cin >> start;
-        meet.setBeginTime(start);
-    }
-    {
-        cout << "Enter the meeting's end time: " << '\n';
-        Time end;
-        cin >> end;
-        meet.setEndTime(end);
-    }
+
+    cout << "Enter the meeting name: " << '\n';
+    cin.getline(buffer, MAX_SIZE, '\n');
+    meet.setName(buffer);
+
+    cout << "Enter the meeting's info(Maximum length - 1024 characters):" << '\n';
+    // cin.ignore();
+    cin.getline(buffer, MAX_SIZE);
+    meet.setMeetingInfo(buffer);
+
+    cout << "Enter the meeting's date: " << '\n';
+    Date date;
+    cin >> date;
+    meet.setDate(date);
+
+    cout << "Enter the meeting's start time: " << '\n';
+    Time start;
+    cin >> start;
+    meet.setBeginTime(start);
+
+    cout << "Enter the meeting's end time: " << '\n';
+    Time end;
+    cin >> end;
+    meet.setEndTime(end);
+    return meet;
 }
 void writeInFile(const Meeting &meet)
 {
@@ -46,7 +52,7 @@ void writeInFile(const Meeting &meet)
     file << "|";
     file << meet.getBeginTime().getHours() << ":" << meet.getBeginTime().getMins() << ":" << meet.getBeginTime().getSeconds();
     file << "|";
-    file << meet.getEndTime().getHours() << ":" << meet.getEndTime().getMins() << ":" << meet.getEndTime().getSeconds()<<"\n";
+    file << meet.getEndTime().getHours() << ":" << meet.getEndTime().getMins() << ":" << meet.getEndTime().getSeconds() << "\n";
     file.close();
 }
 void Meeting::copyFrom(const Meeting &other)
@@ -76,7 +82,6 @@ Meeting::Meeting(const char *name, const char *meetinginfo, const Date &date, co
 {
     setName(name);
     setMeetingInfo(meetinginfo);
-
 }
 Meeting::Meeting(const Meeting &other)
 {
@@ -121,21 +126,35 @@ const char *Meeting::getMeetingInfo() const
 {
     return mMeetingInfo;
 }
-Date Meeting::getDate() const
+const Date Meeting::getDate() const
 {
     return mDate;
 }
-Time Meeting::getBeginTime() const
+const Time Meeting::getBeginTime() const
 {
     return mBegin;
 }
-Time Meeting::getEndTime() const
+const Time Meeting::getEndTime() const
 {
     return mEnd;
 }
 bool Meeting::operator==(const Meeting &other) const
 {
     return (strcmp(mName, other.mName) == 0) && (strcmp(mMeetingInfo, other.mMeetingInfo) == 0) && (mDate == other.mDate) && (mBegin == other.mBegin) && (mEnd == other.mEnd);
+}
+bool Meeting::operator>(const Meeting &other) const
+{
+    if (mDate > other.mDate)
+        return 1;
+    if (mDate == other.mDate)
+    {
+        if (mBegin > other.mBegin)
+            return 1;
+        else
+            return 0;
+    }
+    else
+        return 0;
 }
 Meeting::~Meeting()
 {

@@ -8,9 +8,20 @@
 class personalCalendar
 {
 private:
-    Meeting **calendar;
-    size_t meetingCount;
-public:
+    Meeting **mCalendar;
+    size_t mMeetingCount;
+    size_t mCapacity;
+    void resize();
+    void sort();
+    void print();
 
+public:
+    personalCalendar();
+    personalCalendar(size_t, size_t);
+    Meeting **getmCalendar() const;
+    void addMeeting(const Meeting &);
+    void cancelMeeting(const char *, const char *, const Date&, const Time&, const Time&);
+    void daySchedule(const Date &) const;
+    void changeMeeting();
 };
 #endif

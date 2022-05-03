@@ -16,14 +16,15 @@ private:
 public:
     Date();
     Date(size_t, size_t, size_t);
+    Date &operator=(const Date &);
     void setDay(int);
     void setMonth(int);
     void setYear(int);
     size_t getDay() const;
     size_t getMonth() const;
     size_t getYear() const;
-    bool operator==(const Date &);
-    bool operator>(const Date &);
+    bool operator==(const Date &) const;
+    bool operator>(const Date &) const;
     friend int operator-(const Date &, const Date &);
     // Date &operator+=(const Date &other);
     friend std::ostream &operator<<(std::ostream &, const Date &);

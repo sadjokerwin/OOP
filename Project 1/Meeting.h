@@ -13,10 +13,11 @@ class Meeting
     Time mBegin;
     Time mEnd;
     void copyFrom(const Meeting &);
-    void free();
+    void free(); 
 
 public:
     Meeting();
+    Meeting(const char *, const char *, const Date &, const Time &, const Time &);
     Meeting(const Meeting &);
     Meeting &operator=(const Meeting &);
     void setName(const char *);
@@ -26,11 +27,14 @@ public:
     void setEndTime(const Time &);
     const char *getName() const;
     const char* getMeetingInfo() const;
-    Date getDate() const;
-    Time getBeginTime() const;
-    Time getEndTime() const;
+    const Date getDate() const;
+    const Time getBeginTime() const;
+    const Time getEndTime() const;
+    bool operator==(const Meeting&) const;
+    bool operator>(const Meeting &) const;
     ~Meeting();
 };
-void enterMeeting(Meeting &);
+void printMeeting(const Meeting &);
+const Meeting enterMeeting();
 void writeInFile(const Meeting &);
 #endif

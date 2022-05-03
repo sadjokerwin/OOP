@@ -46,6 +46,15 @@ Date::Date(size_t day, size_t month, size_t year)
     setMonth(month);
     setYear(year);
 }
+Date &Date::operator=(const Date &other)
+{
+    if (isValidDate(other.mDay, other.mMonth, other.mYear))
+    {
+        mDay = other.mDay;
+        mMonth = other.mMonth;
+        mYear = other.mYear;
+    }
+}
 void Date::setDay(int day)
 {
     mDay = day;
@@ -131,11 +140,11 @@ int operator-(const Date &lhs, const Date &rhs)
 //         }
 //     }
 // }
-bool Date::operator==(const Date &rhs)
+bool Date::operator==(const Date &rhs) const
 {
     return (mDay == rhs.mDay) && (mMonth == rhs.mMonth) && (mYear == rhs.mYear);
 }
-bool Date::operator>(const Date &rhs)
+bool Date::operator>(const Date &rhs) const
 {
     if ((*this - rhs) > 0)
         return true;
@@ -144,7 +153,27 @@ bool Date::operator>(const Date &rhs)
 }
 std::ostream &operator<<(std::ostream &out, const Date &date)
 {
-    return out << date.mDay << date.mMonth << date.mYear;
+    if (date.mDay <= 9)
+        out << "0" << date.mDay << ".";
+    else
+        out << date.mDay << ".";
+    if (date.mMonth <= 9)
+        out << "0" << date.mMonth << ".";
+    else
+        out << date.mMonth << ".";
+    int zeroCount = 3 - (date.mYear / 10);
+    while (zeroCount > 0)
+    {
+        out << "0";
+        zeroCount--;
+    }
+    // if (date.mYear <= 9)
+    //     out << "0" << date.mYear;
+    // else
+    //     out << date.mYear;
+    out << date.mYear;
+    return out;
+    // return out << date.mDay << "." << date.mMonth << "." << date.mYear;
 }
 std::istream &operator>>(std::istream &in, Date &date)
 {

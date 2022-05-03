@@ -80,9 +80,9 @@ size_t Time::getTimeInSecs() const
 {
     return mTimeInSecs;
 }
-bool Time::operator<(const Time &other) const
+bool Time::operator>(const Time &other) const
 {
-    return mTimeInSecs < other.mTimeInSecs;
+    return mTimeInSecs > other.mTimeInSecs;
 }
 bool Time::operator==(const Time &other) const
 {
@@ -98,7 +98,19 @@ Time operator-(const Time &lhs, const Time &rhs)
 }
 std::ostream &operator<<(std::ostream &out, const Time &other)
 {
-    return out << other.mHours << ":" << other.mMins << ":" << other.mSecs;
+    if (other.mHours <= 9)
+        out << "0" << other.mHours << ":";
+    else
+        out << other.mHours << ":";
+    if (other.mMins <= 9)
+        out << "0" << other.mMins << ":";
+    else
+        out << other.mMins << ":";
+    if (other.mSecs <= 9)
+        out << "0" << other.mSecs;
+    else
+        out << other.mSecs;
+    return out;
 }
 std::istream &operator>>(std::istream &in, Time &other)
 {
