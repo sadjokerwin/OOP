@@ -5,23 +5,35 @@
 #include "Date.h"
 #include "Time.h"
 #include "Meeting.h"
+using namespace std;
 class personalCalendar
 {
 private:
-    Meeting **mCalendar;
+    Meeting** mCalendar;
     size_t mMeetingCount;
     size_t mCapacity;
     void resize();
     void sort();
     void print();
+    void erase();
+    size_t findElement(const Meeting &) const;
 
 public:
+    
     personalCalendar();
     personalCalendar(size_t, size_t);
+    size_t getMeetingCount() const;
+    size_t getCapacity() const;
+    void setMeetingCount(size_t);
+    void setCapacity(size_t);
     Meeting **getmCalendar() const;
+    void addMeeting();
     void addMeeting(const Meeting &);
-    void cancelMeeting(const char *, const char *, const Date&, const Time&, const Time&);
+    void cancelMeeting();
     void daySchedule(const Date &) const;
     void changeMeeting();
+    bool isTimeSlotTaken(const Meeting &) const;
+    ~personalCalendar();
 };
+
 #endif

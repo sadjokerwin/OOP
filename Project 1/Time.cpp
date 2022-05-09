@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Time.h"
+using namespace std;
 void enterTime()
 {
-    int hours, mins, secs;
+    int hours=0, mins=0, secs=0;
     while (!isValidTime(hours, mins, secs))
     {
         cin >> hours >> mins >> secs;
@@ -50,7 +51,9 @@ Time &Time::operator=(const Time &other)
         mHours = other.mHours;
         mMins = other.mMins;
         mSecs = other.mSecs;
+        turnToSec();
     }
+    return *this;
 }
 void Time::setHours(int hours)
 {
@@ -82,11 +85,25 @@ size_t Time::getTimeInSecs() const
 }
 bool Time::operator>(const Time &other) const
 {
-    return mTimeInSecs > other.mTimeInSecs;
+    if (mHours > other.mHours)
+        return 1;
+    if (mHours == other.mHours)
+    {
+        if (mMins > other.mMins)
+            return 1;
+        if (mMins == other.mMins)
+        {
+            if (mSecs > other.mSecs)
+                return 1;
+        }
+        else
+            return 0;
+    }
+    else
+        return 0;
 }
-bool Time::operator==(const Time &other) const
-{
-    return mTimeInSecs == other.mTimeInSecs;
+bool Time::operator==(const Time &other) const {
+    return mHours == other.mHours && mMins == other.mMins && mSecs == other.mSecs;
 }
 Time operator-(const Time &lhs, const Time &rhs)
 {

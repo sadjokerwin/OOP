@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Date.h"
+using namespace std;
 void enterDate()
 {
-    int day, month, year;
+    int day = 0, month = 0, year = 0;
     while (!isValidDate(day, month, year))
     {
         cin >> day >> month >> year;
@@ -13,7 +14,7 @@ bool isValidDate(int day, int month, int year)
 {
     if (month > 0 && month < 13)
     {
-        if (month == 1 && month == 3 && month == 5 && month == 7 && month == 8 && month == 10 && month == 12)
+        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
         {
             return day <= 31;
         }
@@ -54,6 +55,7 @@ Date &Date::operator=(const Date &other)
         mMonth = other.mMonth;
         mYear = other.mYear;
     }
+    return *this;
 }
 void Date::setDay(int day)
 {
@@ -86,7 +88,7 @@ size_t Date::getYear() const
 }
 int operator-(const Date &lhs, const Date &rhs)
 {
-    int lhsDayNum, rhsDayNum, diff;
+    int lhsDayNum = 0, rhsDayNum = 0, diff;
     for (int i = 0; i < lhs.mMonth - 1; i++)
     {
         lhsDayNum += lhs.monthDays[i];
@@ -140,16 +142,36 @@ int operator-(const Date &lhs, const Date &rhs)
 //         }
 //     }
 // }
-bool Date::operator==(const Date &rhs) const
+bool Date::operator==(const Date &other) const
 {
-    return (mDay == rhs.mDay) && (mMonth == rhs.mMonth) && (mYear == rhs.mYear);
+    return (mDay == other.mDay) && (mMonth == other.mMonth) && (mYear == other.mYear);
 }
-bool Date::operator>(const Date &rhs) const
+bool Date::operator>(const Date &other) const
 {
-    if ((*this - rhs) > 0)
-        return true;
+    // if ((*this - rhs) > 0)
+    //     return true;
+    // else
+    //     return false;
+    if (mYear > other.mYear)
+        return 1;
+    if (mYear == other.mYear)
+    {
+        if (mMonth > other.mMonth)
+            return 1;
+        if (mMonth == other.mMonth)
+        {
+            if (mDay > other.mDay)
+            {
+                return 1;
+            }
+            else
+                return 0;
+        }
+        else
+            return 0;
+    }
     else
-        return false;
+        return 0;
 }
 std::ostream &operator<<(std::ostream &out, const Date &date)
 {

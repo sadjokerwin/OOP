@@ -4,11 +4,12 @@
 #include <cstring>
 #include "Date.h"
 #include "Time.h"
+using namespace std;
 class Meeting
 {
     private:
-    char *mName;
-    char *mMeetingInfo;
+    char* mName;
+    char* mMeetingInfo;
     Date mDate;
     Time mBegin;
     Time mEnd;
@@ -18,7 +19,7 @@ class Meeting
 public:
     Meeting();
     Meeting(const char *, const char *, const Date &, const Time &, const Time &);
-    Meeting(const Meeting &);
+    Meeting(const Meeting&);
     Meeting &operator=(const Meeting &);
     void setName(const char *);
     void setMeetingInfo(const char *);
@@ -30,11 +31,12 @@ public:
     const Date getDate() const;
     const Time getBeginTime() const;
     const Time getEndTime() const;
-    bool operator==(const Meeting&) const;
+    bool operator==(const Meeting &) const;
     bool operator>(const Meeting &) const;
+    Meeting(Meeting &&);
     ~Meeting();
 };
 void printMeeting(const Meeting &);
-const Meeting enterMeeting();
 void writeInFile(const Meeting &);
+const Meeting enterMeeting();
 #endif

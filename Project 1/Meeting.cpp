@@ -1,21 +1,30 @@
 #include <iostream>
 #include <fstream>
+#include <cstring>
 #include "Meeting.h"
 #define MAX_SIZE 1024
+#pragma warning(disable : 4996)
+using namespace std;
+
 void printMeeting(const Meeting &other)
 {
-    cout << "Meeting:" << '\n'
-         << "Name: " << other.getName() << '\n'
-         << "Information: " << other.getMeetingInfo() << '\n'
-         << "Date: " << other.getDate() << '\n'
-         << "Begins at: " << other.getBeginTime() << '\n'
-         << "Ends at: " << other.getEndTime();
+    if (&other != nullptr)
+    {
+        cout << '\n'
+             << "Meeting:" << '\n'
+             << "Name: " << other.getName() << '\n'
+             << "Information: " << other.getMeetingInfo() << '\n'
+             << "Date: " << other.getDate() << '\n'
+             << "Begins at: " << other.getBeginTime() << '\n'
+             << "Ends at: " << other.getEndTime();
+    }
+    else
+        cout << "nulapointer" << endl;
 }
 const Meeting enterMeeting()
 {
     Meeting meet;
     char buffer[MAX_SIZE];
-
     cout << "Enter the meeting name: " << '\n';
     cin.getline(buffer, MAX_SIZE, '\n');
     meet.setName(buffer);
@@ -39,6 +48,7 @@ const Meeting enterMeeting()
     Time end;
     cin >> end;
     meet.setEndTime(end);
+    cin.ignore();
     return meet;
 }
 void writeInFile(const Meeting &meet)
@@ -57,9 +67,9 @@ void writeInFile(const Meeting &meet)
 }
 void Meeting::copyFrom(const Meeting &other)
 {
-    mName = new char[strlen(other.mName)];
+    mName = new char[strlen(other.mName) + 1];
     strcpy(mName, other.mName);
-    mMeetingInfo = new char[strlen(other.mMeetingInfo)];
+    mMeetingInfo = new char[strlen(other.mMeetingInfo) + 1];
     strcpy(mMeetingInfo, other.mMeetingInfo);
     mDate = other.mDate;
     mBegin = other.mBegin;
@@ -72,8 +82,12 @@ void Meeting::free()
 }
 Meeting::Meeting()
 {
-    mName = "default";
-    mMeetingInfo = "default";
+    // mName = (char*)NULL;
+    mName = new char[1];
+    mName[0] = '\0';
+    // mMeetingInfo = (char *)NULL;
+    mMeetingInfo = new char[1];
+    mMeetingInfo[0] = '\0';
     Date mDate(0, 0, 0);
     Time mBegin(0, 0, 0);
     Time mEnd(0, 0, 0);
@@ -82,9 +96,13 @@ Meeting::Meeting(const char *name, const char *meetinginfo, const Date &date, co
 {
     setName(name);
     setMeetingInfo(meetinginfo);
+    mDate = date;
+    mBegin = begin;
+    mEnd = end;
 }
 Meeting::Meeting(const Meeting &other)
 {
+    // cout << "copyconstr";
     copyFrom(other);
 }
 Meeting &Meeting::operator=(const Meeting &other)
@@ -112,11 +130,26 @@ void Meeting::setDate(const Date &date)
 }
 void Meeting::setBeginTime(const Time &timeBeg)
 {
-    mBegin = timeBeg;
+    if (!(timeBeg > getEndTime()))
+        mBegin = timeBeg;
+    else
+    {
+        mBegin.setHours(mEnd.getHours());
+        mBegin.setMin(mEnd.getMins());
+        mBegin.setSeconds(mEnd.getSeconds());
+    }
+    
 }
 void Meeting::setEndTime(const Time &timeEnd)
 {
-    mEnd = timeEnd;
+    if (timeEnd > mBegin)
+        mEnd = timeEnd;
+    else
+    {
+        mEnd.setHours(mBegin.getHours());
+        mEnd.setMin(mBegin.getMins());
+        mEnd.setSeconds(mBegin.getSeconds());
+    }
 }
 const char *Meeting::getName() const
 {
@@ -155,6 +188,17 @@ bool Meeting::operator>(const Meeting &other) const
     }
     else
         return 0;
+}
+Meeting::Meeting(Meeting &&other)
+{
+    mName = other.mName;
+    mMeetingInfo = other.mMeetingInfo;
+    mDate = other.mDate;
+    mBegin = other.mBegin;
+    mEnd = other.mEnd;
+    other.mName = nullptr;
+    other.mMeetingInfo = nullptr;
+    std::cout << "move constr" << std::endl;
 }
 Meeting::~Meeting()
 {
