@@ -27,6 +27,7 @@ public:
     size_t getTimeInSecs() const;
     bool operator>(const Time &) const;
     bool operator==(const Time &) const;
+    bool operator>=(const Time &) const;
     friend Time operator-(const Time &, const Time &);
     friend std::ostream &operator<<(std::ostream &, const Time &);
     friend std::istream &operator>>(std::istream &, Time &);

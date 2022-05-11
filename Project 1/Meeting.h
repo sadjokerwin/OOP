@@ -14,7 +14,8 @@ class Meeting
     Time mBegin;
     Time mEnd;
     void copyFrom(const Meeting &);
-    void free(); 
+    void free();
+    bool isValidMeeting(const Time& , const Time& ) const;
 
 public:
     Meeting();
@@ -33,10 +34,11 @@ public:
     const Time getEndTime() const;
     bool operator==(const Meeting &) const;
     bool operator>(const Meeting &) const;
+    Time operator-(const Meeting &) const;
     Meeting(Meeting &&);
     ~Meeting();
 };
 void printMeeting(const Meeting &);
 void writeInFile(const Meeting &);
-const Meeting enterMeeting();
+Meeting enterMeeting();
 #endif

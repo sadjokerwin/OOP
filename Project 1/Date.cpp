@@ -43,36 +43,53 @@ Date::Date()
 }
 Date::Date(size_t day, size_t month, size_t year)
 {
-    setDay(day);
-    setMonth(month);
     setYear(year);
+    setMonth(month);
+    setDay(day);
 }
 Date &Date::operator=(const Date &other)
 {
     if (isValidDate(other.mDay, other.mMonth, other.mYear))
     {
-        mDay = other.mDay;
-        mMonth = other.mMonth;
-        mYear = other.mYear;
+
+        setYear(other.getYear());
+        setMonth(other.getMonth());
+        setDay(other.getDay());
+        // mDay = other.mDay;
+        // mMonth = other.mMonth;
+        // mYear = other.mYear;
     }
     return *this;
 }
 void Date::setDay(int day)
 {
+
+    if (day > monthDays[mMonth - 1])
+    {
+        // cout << "kur";
+        day = 1;
+    }
     mDay = day;
 }
 void Date::setMonth(int month)
 {
+    if (month > 12)
+    {
+        month = 1;
+    }
     mMonth = month;
+    if (mDay > monthDays[mMonth - 1])
+    {
+        mDay = monthDays[mMonth - 1];
+    }
 }
 void Date::setYear(int year)
 {
-    this->mYear = year;
+    mYear = year;
     if (isLeapYear(year))
         monthDays[1] = 29;
     else
         monthDays[1] = 28;
-    mYear = year;
 }
 size_t Date::getDay() const
 {
@@ -85,6 +102,42 @@ size_t Date::getMonth() const
 size_t Date::getYear() const
 {
     return mYear;
+}
+void Date::nextDay()
+{
+    setDay(mDay + 1);
+    if (mDay == 1)
+    {
+        // cout << "vliza";
+        setMonth(mMonth + 1);
+        if (mMonth == 1)
+        {
+            setYear(mYear + 1);
+        }
+    }
+}
+int Date::weekDay() const
+{
+    Date first(1, 1, 1);
+    Date change(31, 3, 1916);
+    int dayOfWeek = 6;
+    // cout << boolalpha << (first.mDay != mDay) << endl;
+    // cout << boolalpha << (first.mMonth != mMonth) << endl;
+    // cout << boolalpha << (first.mYear != mYear) << endl;
+    while ((first.mDay != mDay) || (first.mMonth != mMonth) || (first.mYear != mYear))
+    {
+        if (first == change)
+        {
+            first.setDay(14);
+            first.setMonth(4);
+        }
+        else
+        {
+            first.nextDay();
+        }
+        dayOfWeek += 1;
+    }
+    return dayOfWeek % 7;
 }
 int operator-(const Date &lhs, const Date &rhs)
 {
@@ -172,6 +225,10 @@ bool Date::operator>(const Date &other) const
     }
     else
         return 0;
+}
+bool Date::operator>=(const Date &other) const
+{
+    return *this > other || *this == other;
 }
 std::ostream &operator<<(std::ostream &out, const Date &date)
 {

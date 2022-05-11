@@ -21,35 +21,36 @@ void printMeeting(const Meeting &other)
     else
         cout << "nulapointer" << endl;
 }
-const Meeting enterMeeting()
+Meeting enterMeeting()
 {
-    Meeting meet;
+    Meeting *meet = new Meeting();
     char buffer[MAX_SIZE];
     cout << "Enter the meeting name: " << '\n';
     cin.getline(buffer, MAX_SIZE, '\n');
-    meet.setName(buffer);
+    meet->setName(buffer);
 
     cout << "Enter the meeting's info(Maximum length - 1024 characters):" << '\n';
     // cin.ignore();
     cin.getline(buffer, MAX_SIZE);
-    meet.setMeetingInfo(buffer);
+    meet->setMeetingInfo(buffer);
 
     cout << "Enter the meeting's date: " << '\n';
     Date date;
     cin >> date;
-    meet.setDate(date);
-
-    cout << "Enter the meeting's start time: " << '\n';
-    Time start;
-    cin >> start;
-    meet.setBeginTime(start);
-
-    cout << "Enter the meeting's end time: " << '\n';
-    Time end;
-    cin >> end;
-    meet.setEndTime(end);
+    meet->setDate(date);
+    Time start(0, 0, 1);
+    Time end(0, 0, 0);
+    while (start > end)
+    {
+        cout << "Enter the meeting's start time: " << '\n';
+        cin >> start;
+        meet->setBeginTime(start);
+        cout << "Enter the meeting's end time: " << '\n';
+        cin >> end;
+        meet->setEndTime(end);
+    }
     cin.ignore();
-    return meet;
+    return *meet;
 }
 void writeInFile(const Meeting &meet)
 {
@@ -80,6 +81,10 @@ void Meeting::free()
     delete mName;
     delete mMeetingInfo;
 }
+bool Meeting::isValidMeeting(const Time &begin, const Time &end) const
+{
+    return begin > end;
+}
 Meeting::Meeting()
 {
     // mName = (char*)NULL;
@@ -96,9 +101,17 @@ Meeting::Meeting(const char *name, const char *meetinginfo, const Date &date, co
 {
     setName(name);
     setMeetingInfo(meetinginfo);
-    mDate = date;
-    mBegin = begin;
-    mEnd = end;
+    setDate(date);
+    if (!isValidMeeting(begin, end))
+    {
+        mBegin = begin;
+        mEnd = end;
+    }
+    else
+    {
+        mEnd = begin;
+        mBegin = end;
+    }
 }
 Meeting::Meeting(const Meeting &other)
 {
@@ -130,26 +143,11 @@ void Meeting::setDate(const Date &date)
 }
 void Meeting::setBeginTime(const Time &timeBeg)
 {
-    if (!(timeBeg > getEndTime()))
-        mBegin = timeBeg;
-    else
-    {
-        mBegin.setHours(mEnd.getHours());
-        mBegin.setMin(mEnd.getMins());
-        mBegin.setSeconds(mEnd.getSeconds());
-    }
-    
+    mBegin = timeBeg;
 }
 void Meeting::setEndTime(const Time &timeEnd)
 {
-    if (timeEnd > mBegin)
-        mEnd = timeEnd;
-    else
-    {
-        mEnd.setHours(mBegin.getHours());
-        mEnd.setMin(mBegin.getMins());
-        mEnd.setSeconds(mBegin.getSeconds());
-    }
+    mEnd = timeEnd;
 }
 const char *Meeting::getName() const
 {
@@ -188,6 +186,10 @@ bool Meeting::operator>(const Meeting &other) const
     }
     else
         return 0;
+}
+Time Meeting::operator-(const Meeting &other) const
+{
+ return  mBegin-other.mEnd;
 }
 Meeting::Meeting(Meeting &&other)
 {

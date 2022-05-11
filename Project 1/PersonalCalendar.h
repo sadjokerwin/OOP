@@ -9,7 +9,7 @@ using namespace std;
 class personalCalendar
 {
 private:
-    Meeting** mCalendar;
+    Meeting **mCalendar;
     size_t mMeetingCount;
     size_t mCapacity;
     void resize();
@@ -17,9 +17,9 @@ private:
     void print();
     void erase();
     size_t findElement(const Meeting &) const;
+    char *turnIntoFileName(const Date &) const;
 
 public:
-    
     personalCalendar();
     personalCalendar(size_t, size_t);
     size_t getMeetingCount() const;
@@ -32,7 +32,10 @@ public:
     void cancelMeeting();
     void daySchedule(const Date &) const;
     void changeMeeting();
+    void searchForMeetings() const;
     bool isTimeSlotTaken(const Meeting &) const;
+    void meetingByDayOfWeek(Date, Date);
+    void findFreeTimeSlot(const Date &, const Date &, const Time&, const Time&, const Time&);
     ~personalCalendar();
 };
 

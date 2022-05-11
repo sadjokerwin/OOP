@@ -23,8 +23,11 @@ public:
     size_t getDay() const;
     size_t getMonth() const;
     size_t getYear() const;
+    void nextDay();
+    int weekDay() const;
     bool operator==(const Date &) const;
     bool operator>(const Date &) const;
+    bool operator>=(const Date &) const;
     friend int operator-(const Date &, const Date &);
     // Date &operator+=(const Date &other);
     friend std::ostream &operator<<(std::ostream &, const Date &);

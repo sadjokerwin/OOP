@@ -3,7 +3,7 @@
 using namespace std;
 void enterTime()
 {
-    int hours=0, mins=0, secs=0;
+    int hours = 0, mins = 0, secs = 0;
     while (!isValidTime(hours, mins, secs))
     {
         cin >> hours >> mins >> secs;
@@ -57,14 +57,20 @@ Time &Time::operator=(const Time &other)
 }
 void Time::setHours(int hours)
 {
+    if (hours > 23)
+        mHours = 1;
     mHours = hours;
 }
 void Time::setMin(int min)
 {
+    if (min > 59)
+        mMins = 1;
     mMins = min;
 }
 void Time::setSeconds(int seconds)
 {
+    if (seconds > 59)
+        mSecs = 1;
     mSecs = seconds;
 }
 size_t Time::getHours() const
@@ -102,8 +108,13 @@ bool Time::operator>(const Time &other) const
     else
         return 0;
 }
-bool Time::operator==(const Time &other) const {
+bool Time::operator==(const Time &other) const
+{
     return mHours == other.mHours && mMins == other.mMins && mSecs == other.mSecs;
+}
+bool Time::operator>=(const Time &other) const
+{
+    return *this > other || *this == other;
 }
 Time operator-(const Time &lhs, const Time &rhs)
 {
