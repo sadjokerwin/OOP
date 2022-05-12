@@ -9,25 +9,21 @@ void personalCalendar::resize()
     for (int i = 0; i < mMeetingCount; i++)
     {
         tempCalendar[i] = mCalendar[i];
-        // printMeeting(*(tempCalendar[i]));
     }
-    // if (mCapacity == 0)
-    //     mCapacity = 1;
-    // else
-    //     mCapacity *= 2;
     delete[] mCalendar;
     mCapacity *= 2;
     mCalendar = tempCalendar;
-    // cout << mCapacity;
 }
 void personalCalendar::sort()
 {
     int counter = 0;
-    for (int x = 0; x < mMeetingCount; x++)
+    for (int x = 0; x < mMeetingCount - 1; x++)
     {
         for (int y = x + 1; y < mMeetingCount; y++)
         {
             // cout << "For index [" << x << "] and index [" << y << "]";
+            // if (mCalendar[y] == nullptr)
+            //     continue;
             if (mCalendar[y] == nullptr)
                 continue;
             if (mCalendar[x] == nullptr)
@@ -36,7 +32,6 @@ void personalCalendar::sort()
                 mCalendar[x] = new Meeting(*mCalendar[y]);
                 mCalendar[y] = nullptr;
                 counter++;
-                // mCalendar[y] = nullptr;
             }
             else if (*mCalendar[x] > *mCalendar[y])
             {
@@ -45,15 +40,14 @@ void personalCalendar::sort()
             }
         }
     }
-    mMeetingCount -= counter;
+    // mMeetingCount -= counter;
 }
 void personalCalendar::erase()
 {
-    for (size_t i = 0; i < mCapacity; i++)
+    for (size_t i = 0; i < mMeetingCount; i++)
     {
         delete mCalendar[i];
     }
-
     delete[] mCalendar;
 }
 size_t personalCalendar::findElement(const Meeting &other) const
@@ -101,6 +95,99 @@ char *personalCalendar::turnIntoFileName(const Date &periodBegin) const
     strcat(fileName, "txt");
     return fileName;
 }
+Date personalCalendar::turnIntoDate(const char *dateString)
+{
+    size_t day, month, year;
+    day = ((int)dateString[0] - 48) * 10 + ((int)dateString[1] - 48);
+    month = ((int)dateString[3] - 48) * 10 + ((int)dateString[4] - 48);
+    year = ((int)dateString[6] - 48) * 1000 + ((int)dateString[7] - 48) * 100 + ((int)dateString[8] - 48) * 10 + ((int)dateString[9] - 48);
+    Date *d = new Date(day, month, year);
+    return *d;
+}
+Time personalCalendar::turnIntoTime(const char *timeString)
+{
+    size_t hours, mins, secs;
+    hours = ((int)timeString[0] - 48) * 10 + ((int)timeString[1] - 48);
+    mins = ((int)timeString[3] - 48) * 10 + ((int)timeString[4] - 48);
+    secs = ((int)timeString[6] - 48) * 10 + ((int)timeString[7] - 48);
+    Time *t = new Time(hours, mins, secs);
+    return *t;
+}
+bool personalCalendar::isNewBeginTimeValid(size_t timeInSecs, const Date &date, size_t index) const
+{
+    int hours, mins, secs;
+    hours = timeInSecs / 3600;
+    timeInSecs %= 3600;
+    mins = timeInSecs / 60;
+    timeInSecs %= 60;
+    secs = timeInSecs;
+    Time temp(hours, mins, secs);
+    for (int i = 0; i < index; i++)
+    {
+        if (date == mCalendar[i]->getDate())
+        {
+            if (!(temp > mCalendar[i]->getEndTime()))
+                return false;
+        }
+    }
+    return true;
+}
+bool personalCalendar::isNewEndTimeValid(size_t timeInSecs, const Date &date, size_t index) const
+{
+    int hours, mins, secs;
+    hours = timeInSecs / 3600;
+    timeInSecs %= 3600;
+    mins = timeInSecs / 60;
+    timeInSecs %= 60;
+    secs = timeInSecs;
+    Time temp(hours, mins, secs);
+    for (int i = index+1; i < mMeetingCount; i++)
+    {
+        if (date == mCalendar[i]->getDate())
+        {
+            if (temp > mCalendar[i]->getBeginTime())
+                return false;
+        }
+    }
+    return true;
+}
+bool personalCalendar::isNewDataValid(size_t day, size_t month, size_t year, size_t index) const
+{
+    Date date(day, month, year);
+    for (int i = 0; i < index; i++)
+    {
+        if(date==mCalendar[i]->getDate())
+        {
+            if ((mCalendar[index]->getBeginTime() > (*mCalendar[i]).getBeginTime() || mCalendar[index]->getBeginTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > mCalendar[index]->getBeginTime() || (*mCalendar[i]).getEndTime() == mCalendar[index]->getBeginTime()))
+            {
+                // cout << "true1" << endl;
+                return true;
+            }
+            if ((mCalendar[index]->getEndTime() > (*mCalendar[i]).getBeginTime() || mCalendar[index]->getEndTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > mCalendar[index]->getEndTime() || (*mCalendar[i]).getEndTime() == mCalendar[index]->getEndTime()))
+            {
+                // cout << "true2" << endl;
+                return true;
+            }
+        }
+    }
+    for (int i = index+1; i < mMeetingCount; i++)
+    {
+        if (date == mCalendar[i]->getDate())
+        {
+            if ((mCalendar[index]->getBeginTime() > (*mCalendar[i]).getBeginTime() || mCalendar[index]->getBeginTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > mCalendar[index]->getBeginTime() || (*mCalendar[i]).getEndTime() == mCalendar[index]->getBeginTime()))
+            {
+                // cout << "true1" << endl;
+                return true;
+            }
+            if ((mCalendar[index]->getEndTime() > (*mCalendar[i]).getBeginTime() || mCalendar[index]->getEndTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > mCalendar[index]->getEndTime() || (*mCalendar[i]).getEndTime() == mCalendar[index]->getEndTime()))
+            {
+                // cout << "true2" << endl;
+                return true;
+            }
+        }
+    }
+    return false;
+}
 personalCalendar::personalCalendar()
 {
     // mCalendar = (Meeting **)NULL;
@@ -114,6 +201,70 @@ personalCalendar::personalCalendar(size_t meetingCount, size_t capacity)
     mMeetingCount = meetingCount;
     mCapacity = capacity;
     mCalendar = new Meeting *[mCapacity];
+}
+/*void personalCalendar::loadFromFile(std::ifstream &fromFile)
+{
+    while (!fromFile.eof())
+    {
+        Meeting *m;
+        m = new Meeting;
+        char *buffer = new char[MAX_SIZE];
+        fromFile.getline(buffer, MAX_SIZE, '|');
+        m->setName(buffer);
+        fromFile.getline(buffer, MAX_SIZE, '|');
+        m->setMeetingInfo(buffer);
+        char *date = new char[11];
+        fromFile.getline(date, 10, '|');
+        m->setDate(turnIntoDate(date));
+        char *time = new char[9];
+        fromFile.getline(date, 8, '|');
+        m->setBeginTime(turnIntoTime(time));
+        fromFile.getline(date, 8, '|');
+        m->setEndTime(turnIntoTime(time));
+        addMeeting(*m);
+        fromFile.get();
+        delete date;
+        delete time;
+        delete buffer;
+    }
+}*/
+void personalCalendar::loadFromFile(std::ifstream &fromFile)
+{
+    while (!fromFile.eof())
+    {
+        Meeting m;
+        char buffer[MAX_SIZE];
+        // name
+        // fromFile.get();
+        fromFile.getline(buffer, MAX_SIZE, '|');
+        // cout << buffer << endl;
+        m.setName(buffer);
+        // meetinginfo
+        fromFile.getline(buffer, MAX_SIZE, '|');
+        // cout << buffer << endl;
+        m.setMeetingInfo(buffer);
+        // date
+        char *date = new char[11];
+        fromFile.getline(date, 11, '|');
+        // cout << date;
+        m.setDate(turnIntoDate(date));
+        // begintime
+        char *time = new char[9];
+        fromFile.getline(time, 9, '|');
+        // cout << time << endl;
+        m.setBeginTime(turnIntoTime(time));
+        // endtime
+        fromFile.getline(time, 9, '\n');
+        m.setEndTime(turnIntoTime(time));
+        // cout << m;
+        addMeeting(m);
+        // cout << fromFile.get();
+        delete date;
+        delete time;
+        // delete buffer;
+        // delete m;
+        // fromFile.get();
+    }
 }
 size_t personalCalendar::getMeetingCount() const
 {
@@ -139,13 +290,14 @@ void personalCalendar::addMeeting(const Meeting &meet)
 {
     if ((mMeetingCount + 1) > (mCapacity * 3) / 4)
     {
+        // cout << "resize";
         resize();
     }
     if (!isTimeSlotTaken(meet))
     {
         mCalendar[mMeetingCount] = new Meeting(meet);
         mMeetingCount++;
-        cout << "MeetingCount" << mMeetingCount << '\n';
+        // cout << "MeetingCount" << mMeetingCount << '\n';
     }
     else
     {
@@ -165,18 +317,18 @@ bool personalCalendar::isTimeSlotTaken(const Meeting &other) const
         {
             if ((other.getBeginTime() > (*mCalendar[i]).getBeginTime() || other.getBeginTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > other.getBeginTime() || (*mCalendar[i]).getEndTime() == other.getBeginTime()))
             {
-                cout << "true1" << endl;
+                // cout << "true1" << endl;
                 return true;
             }
             if ((other.getEndTime() > (*mCalendar[i]).getBeginTime() || other.getEndTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > other.getEndTime() || (*mCalendar[i]).getEndTime() == other.getEndTime()))
             {
-                cout << "true2" << endl;
+                // cout << "true2" << endl;
                 return true;
             }
         }
         else
         {
-            cout << "false";
+            // cout << "false";
         }
     }
     return false;
@@ -184,9 +336,9 @@ bool personalCalendar::isTimeSlotTaken(const Meeting &other) const
 void personalCalendar::addMeeting()
 {
     cout << "Enter the details of the meeting you want to add: " << endl;
-    if ((mMeetingCount + 1) > (mCapacity * 3) / 4)
+    if ((mMeetingCount + 1) > mCapacity)
     {
-        cout << "resize";
+        cout << "resize" << endl;
         resize();
     }
     Meeting *temp = new Meeting(enterMeeting());
@@ -213,15 +365,18 @@ void personalCalendar::cancelMeeting()
         if (*mCalendar[i] == *temp)
         {
             mCalendar[i] = nullptr;
-            sort();
-            cout << endl
-                 << mMeetingCount;
+
+            // cout << endl
+            //      << mMeetingCount;
         }
     }
+    sort();
+    mMeetingCount--;
     delete temp;
 }
 void personalCalendar::daySchedule(const Date &date) const
 {
+    cout << "Daily schedule for " << date << endl;
     for (int i = 0; i < mMeetingCount; i++)
     {
         if (mCalendar[i]->getDate() == date)
@@ -250,16 +405,17 @@ void personalCalendar::changeMeeting()
     }
     if (strcmp("Meeting info", temp) == 0)
     {
-        char *meetinginfo;
         cout << "Enter the new meeting info: " << endl;
+        char *meetinginfo = new char[MAX_SIZE];
         cin.getline(meetinginfo, MAX_SIZE);
+        // cout << meetinginfo;
         (*mCalendar[index]).setMeetingInfo(meetinginfo);
     }
     if (strcmp("Meeting date", temp) == 0)
     {
-        int day, month, year;
+        int day = 60, month = 0, year = 0;
         cout << "Enter the new date: " << endl;
-        while (!isValidDate(day, month, year))
+        while (!isValidDate(day, month, year)||isNewDataValid(day, month, year, index))
         {
             cout << "Day: ";
             cin >> day;
@@ -273,9 +429,10 @@ void personalCalendar::changeMeeting()
     }
     if (strcmp("Start time", temp) == 0)
     {
-        size_t hours = 0, minutes = 0, seconds = 0;
+        size_t hours = 24, minutes = 0, seconds = 0;
+        int newTimeInSecs = hours * 3600 + minutes * 60 + seconds;
         cout << "Enter the new start time: " << endl;
-        while (!isValidTime(hours, minutes, seconds))
+        while (!isValidTime(hours, minutes, seconds)||(newTimeInSecs>mCalendar[index]->getEndTime().getTimeInSecs())||!(isNewBeginTimeValid(newTimeInSecs, mCalendar[index]->getDate(), index)))
         {
             cout << "Hours: ";
             cin >> hours;
@@ -283,15 +440,17 @@ void personalCalendar::changeMeeting()
             cin >> minutes;
             cout << "Seconds: ";
             cin >> seconds;
+            newTimeInSecs = hours * 3600 + minutes * 60 + seconds;
         }
         Time t(hours, minutes, seconds);
         (*mCalendar[index]).setBeginTime(t);
     }
     if (strcmp("End time", temp) == 0)
     {
-        size_t hours, minutes, seconds;
+        size_t hours=24, minutes=0, seconds=0;
+        int newTimeInSecs = hours * 3600 + minutes * 60 + seconds;
         cout << "Enter the new end time: " << endl;
-        while (!isValidTime(hours, minutes, seconds))
+        while (!isValidTime(hours, minutes, seconds) || (newTimeInSecs < mCalendar[index]->getBeginTime().getTimeInSecs()) || !(isNewEndTimeValid(newTimeInSecs, mCalendar[index]->getDate(), index)))
         {
             cout << "Hours: ";
             cin >> hours;
@@ -299,6 +458,7 @@ void personalCalendar::changeMeeting()
             cin >> minutes;
             cout << "Seconds: ";
             cin >> seconds;
+            newTimeInSecs = hours * 3600 + minutes * 60 + seconds;
         }
         Time t(hours, minutes, seconds);
         (*mCalendar[index]).setEndTime(t);
@@ -336,7 +496,7 @@ void personalCalendar::searchForMeetings() const
     }
     delete temp1;
 }
-void personalCalendar::meetingByDayOfWeek(Date periodBegin, Date periodEnd)
+void personalCalendar::meetingByDayOfWeek(Date periodBegin, Date periodEnd) const
 {
 
     char *fileName = turnIntoFileName(periodBegin);
@@ -402,7 +562,7 @@ void personalCalendar::meetingByDayOfWeek(Date periodBegin, Date periodEnd)
     file.close();
     delete workLoad;
 }
-void personalCalendar::findFreeTimeSlot(const Date &periodBegin, const Date &periodEnd, const Time &duration, const Time &timePeriodBegin, const Time &timePeriodEnd)
+void personalCalendar::findFreeTimeSlot(const Date &periodBegin, const Date &periodEnd, const Time &duration, const Time &timePeriodBegin, const Time &timePeriodEnd) const
 {
 
     Date periodBeginCopy = periodBegin;
@@ -413,33 +573,48 @@ void personalCalendar::findFreeTimeSlot(const Date &periodBegin, const Date &per
     int decrementCounter = 0;
     while (!(periodBeginCopy == periodEndCopy))
     {
-        for (int i = 0 + decrementCounter; i < mMeetingCount; i++)
+        for (int i = 0 + decrementCounter; i < mMeetingCount - 1; i++)
         {
+
             if (mCalendar[i]->getDate() >= periodBegin && !(mCalendar[i]->getDate() > periodEnd) && (mCalendar[i + 1]->getDate() >= periodBegin && !(mCalendar[i + 1]->getDate() > periodEnd)))
             {
-                if (mCalendar[i]->getBeginTime() >= timePeriodBegin && !(mCalendar[i]->getBeginTime() > timePeriodEnd) && (mCalendar[i + 1]->getEndTime() >= timePeriodBegin) && !(mCalendar[i + 1]->getEndTime() > timePeriodEnd))
+                if (mCalendar[i]->getDate() == mCalendar[i + 1]->getDate())
                 {
-                    if (((*mCalendar[i + 1] - *mCalendar[i]) == duration || (*mCalendar[i + 1] - *mCalendar[i]) > duration) && mCalendar[i]->getDate()==mCalendar[i+1]->getDate())
+                    if (mCalendar[i]->getBeginTime() >= timePeriodBegin && !(mCalendar[i]->getBeginTime() > timePeriodEnd) && (mCalendar[i + 1]->getEndTime() >= timePeriodBegin) && !(mCalendar[i + 1]->getEndTime() > timePeriodEnd))
                     {
-                        cout << "There is a time slot between ";
-                        printMeeting(*mCalendar[i]);
-                        cout << " and ";
-                        printMeeting(*mCalendar[i + 1]);
-                        cout << endl;
-                        cout << "##########################" << endl;
-                        cout << "##########################" << endl;
-                        decrementCounter++;
-                        isThereTimeSlot = true;
+                        if (((*mCalendar[i + 1] - *mCalendar[i]) >= duration))
+                        {
+                            cout << "There is a time slot between ";
+                            printMeeting(*mCalendar[i]);
+                            cout << endl
+                                 << "and ";
+                            printMeeting(*mCalendar[i + 1]);
+                            cout << endl;
+                            cout << "##########################" << endl;
+                            cout << "##########################" << endl;
+                            if (!isThereTimeSlot)
+                                isThereTimeSlot = true;
+                            // decrementCounter++;
+                            // cout << isThereTimeSlot;
+                        }
                     }
                 }
             }
+            decrementCounter++;
         }
         periodBeginCopy.nextDay();
-        cout << isThereTimeSlot;
     }
-    
-    // if(isThereTimeSlot)
-    //     cout << "There are no suitable time slots for a meeting in the selected hours! ";
+
+    if (!isThereTimeSlot)
+        cout << "There are no suitable time slots for a meeting in the selected hours! ";
+}
+void personalCalendar::saveToFile(std::ofstream &toFile) const
+{
+    for (int i = 0; i < mMeetingCount - 1; i++)
+    {
+        toFile << *(mCalendar[i]) << endl;
+    }
+    toFile << *(mCalendar[mMeetingCount - 1]);
 }
 personalCalendar::~personalCalendar()
 {

@@ -18,10 +18,16 @@ private:
     void erase();
     size_t findElement(const Meeting &) const;
     char *turnIntoFileName(const Date &) const;
+    Date turnIntoDate(const char *);
+    Time turnIntoTime(const char *);
+    bool isNewBeginTimeValid(size_t, const Date &, size_t) const;
+    bool isNewEndTimeValid(size_t, const Date &, size_t) const;
+    bool isNewDataValid(size_t , size_t , size_t , size_t) const;
 
 public:
     personalCalendar();
     personalCalendar(size_t, size_t);
+    void loadFromFile(std::ifstream &);
     size_t getMeetingCount() const;
     size_t getCapacity() const;
     void setMeetingCount(size_t);
@@ -34,9 +40,11 @@ public:
     void changeMeeting();
     void searchForMeetings() const;
     bool isTimeSlotTaken(const Meeting &) const;
-    void meetingByDayOfWeek(Date, Date);
-    void findFreeTimeSlot(const Date &, const Date &, const Time&, const Time&, const Time&);
+    void meetingByDayOfWeek(Date, Date) const;
+    void findFreeTimeSlot(const Date &, const Date &, const Time&, const Time&, const Time&) const;
+    void saveToFile(std::ofstream &) const;
     ~personalCalendar();
 };
+void runProgram();
 
 #endif

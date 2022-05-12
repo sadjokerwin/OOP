@@ -10,13 +10,12 @@ void printMeeting(const Meeting &other)
 {
     if (&other != nullptr)
     {
-        cout << '\n'
-             << "Meeting:" << '\n'
+        cout << "Meeting:" << '\n'
              << "Name: " << other.getName() << '\n'
              << "Information: " << other.getMeetingInfo() << '\n'
              << "Date: " << other.getDate() << '\n'
              << "Begins at: " << other.getBeginTime() << '\n'
-             << "Ends at: " << other.getEndTime();
+             << "Ends at: " << other.getEndTime() << '\n';
     }
     else
         cout << "nulapointer" << endl;
@@ -189,18 +188,13 @@ bool Meeting::operator>(const Meeting &other) const
 }
 Time Meeting::operator-(const Meeting &other) const
 {
- return  mBegin-other.mEnd;
+    // cout << mBegin << endl;
+    // cout << other.getEndTime() << endl;
+    return mBegin - other.getEndTime();
 }
-Meeting::Meeting(Meeting &&other)
+std::ostream &operator<<(std::ostream &out, const Meeting &meeting)
 {
-    mName = other.mName;
-    mMeetingInfo = other.mMeetingInfo;
-    mDate = other.mDate;
-    mBegin = other.mBegin;
-    mEnd = other.mEnd;
-    other.mName = nullptr;
-    other.mMeetingInfo = nullptr;
-    std::cout << "move constr" << std::endl;
+    out << meeting.getName() << '|' << meeting.getMeetingInfo() << '|' << meeting.getDate() << '|' << meeting.getBeginTime() << '|' << meeting.getEndTime();
 }
 Meeting::~Meeting()
 {

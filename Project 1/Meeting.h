@@ -16,6 +16,7 @@ class Meeting
     void copyFrom(const Meeting &);
     void free();
     bool isValidMeeting(const Time& , const Time& ) const;
+    
 
 public:
     Meeting();
@@ -35,7 +36,7 @@ public:
     bool operator==(const Meeting &) const;
     bool operator>(const Meeting &) const;
     Time operator-(const Meeting &) const;
-    Meeting(Meeting &&);
+    friend std::ostream &operator<<(std::ostream &, const Meeting &);
     ~Meeting();
 };
 void printMeeting(const Meeting &);

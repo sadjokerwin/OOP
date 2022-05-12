@@ -36,6 +36,7 @@ Time::Time()
     setHours(0);
     setMin(0);
     setSeconds(0);
+    mTimeInSecs = 0;
 }
 Time::Time(size_t hours, size_t mins, size_t secs)
 {
@@ -59,19 +60,22 @@ void Time::setHours(int hours)
 {
     if (hours > 23)
         mHours = 1;
-    mHours = hours;
+    else
+        mHours = hours;
 }
 void Time::setMin(int min)
 {
     if (min > 59)
         mMins = 1;
-    mMins = min;
+    else
+        mMins = min;
 }
 void Time::setSeconds(int seconds)
 {
     if (seconds > 59)
         mSecs = 1;
-    mSecs = seconds;
+    else
+        mSecs = seconds;
 }
 size_t Time::getHours() const
 {
@@ -101,6 +105,8 @@ bool Time::operator>(const Time &other) const
         {
             if (mSecs > other.mSecs)
                 return 1;
+            else
+                return 0;
         }
         else
             return 0;
@@ -119,8 +125,8 @@ bool Time::operator>=(const Time &other) const
 Time operator-(const Time &lhs, const Time &rhs)
 {
     Time diff;
-    diff.mTimeInSecs = lhs.mTimeInSecs;
-    diff.mTimeInSecs -= rhs.mTimeInSecs;
+    diff.mTimeInSecs = lhs.getTimeInSecs();
+    diff.mTimeInSecs -= rhs.getTimeInSecs();
     diff.convertToNormal();
     return diff;
 }
