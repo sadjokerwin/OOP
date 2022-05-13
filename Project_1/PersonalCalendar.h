@@ -45,6 +45,5 @@ public:
     void saveToFile(std::ofstream &) const;
     ~personalCalendar();
 };
-void runProgram();
 
 #endif
