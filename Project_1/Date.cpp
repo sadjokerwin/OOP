@@ -51,13 +51,9 @@ Date &Date::operator=(const Date &other)
 {
     if (isValidDate(other.mDay, other.mMonth, other.mYear))
     {
-
         setYear(other.getYear());
         setMonth(other.getMonth());
         setDay(other.getDay());
-        // mDay = other.mDay;
-        // mMonth = other.mMonth;
-        // mYear = other.mYear;
     }
     return *this;
 }
@@ -66,7 +62,6 @@ void Date::setDay(int day)
 
     if (day > monthDays[mMonth - 1])
     {
-        // cout << "kur";
         day = 1;
     }
     mDay = day;
@@ -108,7 +103,6 @@ void Date::nextDay()
     setDay(mDay + 1);
     if (mDay == 1)
     {
-        // cout << "vliza";
         setMonth(mMonth + 1);
         if (mMonth == 1)
         {
@@ -121,9 +115,6 @@ int Date::weekDay() const
     Date first(1, 1, 1);
     Date change(31, 3, 1916);
     int dayOfWeek = 6;
-    // cout << boolalpha << (first.mDay != mDay) << endl;
-    // cout << boolalpha << (first.mMonth != mMonth) << endl;
-    // cout << boolalpha << (first.mYear != mYear) << endl;
     while ((first.mDay != mDay) || (first.mMonth != mMonth) || (first.mYear != mYear))
     {
         if (first == change)
@@ -154,57 +145,13 @@ int operator-(const Date &lhs, const Date &rhs)
     rhsDayNum += rhs.mDay;
     diff = rhsDayNum - lhsDayNum;
     return diff;
-    // if (isValidDate(mDay, mMonth, mYear))
-    // {
-    //     return *this;
-    // }
-    // else
-    // {
-    //     if ((mMonth - 1) >= 1)
-    //     {
-    //         mMonth -= 1;
-    //         if (mMonth == 1 && mMonth == 3 && mMonth == 5 && mMonth == 7 && mMonth == 8 && mMonth == 10 && mMonth == 12)
-    //         {
-    //             mDay = 31;
-    //         }
-    //     }
-    // }
 }
-// Date Date::operator+=(const Date &other)
-// {
-//     mDay += other.mDay;
-//     for (int i = 1; i <= other.mDay; i++)
-//     {
-//         if (isValidDate(mDay, mMonth, mYear))
-//         {
-//             return *this;
-//         }
-//         else
-//         {
-//             if ((mMonth + 1) <= 12)
-//             {
-//                 mMonth += 1;
-//                 mDay = 1;
-//             }
-//             else
-//             {
-//                 mYear += 1;
-//                 mMonth = 1;
-//                 mDay = 1;
-//             }
-//         }
-//     }
-// }
 bool Date::operator==(const Date &other) const
 {
     return (mDay == other.mDay) && (mMonth == other.mMonth) && (mYear == other.mYear);
 }
 bool Date::operator>(const Date &other) const
 {
-    // if ((*this - rhs) > 0)
-    //     return true;
-    // else
-    //     return false;
     if (mYear > other.mYear)
         return 1;
     if (mYear == other.mYear)
@@ -246,13 +193,8 @@ std::ostream &operator<<(std::ostream &out, const Date &date)
         out << "0";
         zeroCount--;
     }
-    // if (date.mYear <= 9)
-    //     out << "0" << date.mYear;
-    // else
-    //     out << date.mYear;
     out << date.mYear;
-    return out;
-    // return out << date.mDay << "." << date.mMonth << "." << date.mYear;
+    return out;  
 }
 std::istream &operator>>(std::istream &in, Date &date)
 {

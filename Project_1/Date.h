@@ -29,7 +29,6 @@ public:
     bool operator>(const Date &) const;
     bool operator>=(const Date &) const;
     friend int operator-(const Date &, const Date &);
-    // Date &operator+=(const Date &other);
     friend std::ostream &operator<<(std::ostream &, const Date &);
     friend std::istream &operator>>(std::istream &, Date &);
 };

@@ -4,7 +4,6 @@
 #include "Meeting.h"
 #pragma warning(disable : 4996)
 using namespace std;
-
 void printMeeting(const Meeting &other)
 {
     if (&other != nullptr)
@@ -28,7 +27,6 @@ Meeting enterMeeting()
     meet->setName(buffer);
 
     cout << "Enter the meeting's info(Maximum length - 1024 characters):" << '\n';
-    // cin.ignore();
     cin.getline(buffer, MAX_SIZE);
     meet->setMeetingInfo(buffer);
 
@@ -85,10 +83,8 @@ bool Meeting::isValidMeeting(const Time &begin, const Time &end) const
 }
 Meeting::Meeting()
 {
-    // mName = (char*)NULL;
     mName = new char[1];
     mName[0] = '\0';
-    // mMeetingInfo = (char *)NULL;
     mMeetingInfo = new char[1];
     mMeetingInfo[0] = '\0';
     Date mDate(0, 0, 0);
@@ -113,7 +109,6 @@ Meeting::Meeting(const char *name, const char *meetinginfo, const Date &date, co
 }
 Meeting::Meeting(const Meeting &other)
 {
-    // cout << "copyconstr";
     copyFrom(other);
 }
 Meeting &Meeting::operator=(const Meeting &other)
@@ -187,8 +182,6 @@ bool Meeting::operator>(const Meeting &other) const
 }
 Time Meeting::operator-(const Meeting &other) const
 {
-    // cout << mBegin << endl;
-    // cout << other.getEndTime() << endl;
     return mBegin - other.getEndTime();
 }
 std::ostream &operator<<(std::ostream &out, const Meeting &meeting)

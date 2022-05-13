@@ -21,26 +21,20 @@ void personalCalendar::sort()
     {
         for (int y = x + 1; y < mMeetingCount; y++)
         {
-            // cout << "For index [" << x << "] and index [" << y << "]";
-            // if (mCalendar[y] == nullptr)
-            //     continue;
             if (mCalendar[y] == nullptr)
                 continue;
             if (mCalendar[x] == nullptr)
             {
-                // cout << "nullptr swap" << '\n';
                 mCalendar[x] = new Meeting(*mCalendar[y]);
                 mCalendar[y] = nullptr;
                 counter++;
             }
             else if (*mCalendar[x] > *mCalendar[y])
             {
-                // cout << "swap" << '\n';
                 swap(mCalendar[y], mCalendar[x]);
             }
         }
     }
-    // mMeetingCount -= counter;
 }
 void personalCalendar::erase()
 {
@@ -160,12 +154,10 @@ bool personalCalendar::isNewDataValid(size_t day, size_t month, size_t year, siz
         {
             if ((mCalendar[index]->getBeginTime() > (*mCalendar[i]).getBeginTime() || mCalendar[index]->getBeginTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > mCalendar[index]->getBeginTime() || (*mCalendar[i]).getEndTime() == mCalendar[index]->getBeginTime()))
             {
-                // cout << "true1" << endl;
                 return true;
             }
             if ((mCalendar[index]->getEndTime() > (*mCalendar[i]).getBeginTime() || mCalendar[index]->getEndTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > mCalendar[index]->getEndTime() || (*mCalendar[i]).getEndTime() == mCalendar[index]->getEndTime()))
             {
-                // cout << "true2" << endl;
                 return true;
             }
         }
@@ -176,12 +168,10 @@ bool personalCalendar::isNewDataValid(size_t day, size_t month, size_t year, siz
         {
             if ((mCalendar[index]->getBeginTime() > (*mCalendar[i]).getBeginTime() || mCalendar[index]->getBeginTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > mCalendar[index]->getBeginTime() || (*mCalendar[i]).getEndTime() == mCalendar[index]->getBeginTime()))
             {
-                // cout << "true1" << endl;
                 return true;
             }
             if ((mCalendar[index]->getEndTime() > (*mCalendar[i]).getBeginTime() || mCalendar[index]->getEndTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > mCalendar[index]->getEndTime() || (*mCalendar[i]).getEndTime() == mCalendar[index]->getEndTime()))
             {
-                // cout << "true2" << endl;
                 return true;
             }
         }
@@ -190,44 +180,16 @@ bool personalCalendar::isNewDataValid(size_t day, size_t month, size_t year, siz
 }
 personalCalendar::personalCalendar()
 {
-    // mCalendar = (Meeting **)NULL;
     mCapacity = 16;
     mMeetingCount = 0;
     mCalendar = new Meeting *[mCapacity];
 }
 personalCalendar::personalCalendar(size_t meetingCount, size_t capacity)
 {
-    // mCalendar = (Meeting **)NULL;
     mMeetingCount = meetingCount;
     mCapacity = capacity;
     mCalendar = new Meeting *[mCapacity];
 }
-/*void personalCalendar::loadFromFile(std::ifstream &fromFile)
-{
-    while (!fromFile.eof())
-    {
-        Meeting *m;
-        m = new Meeting;
-        char *buffer = new char[MAX_SIZE];
-        fromFile.getline(buffer, MAX_SIZE, '|');
-        m->setName(buffer);
-        fromFile.getline(buffer, MAX_SIZE, '|');
-        m->setMeetingInfo(buffer);
-        char *date = new char[11];
-        fromFile.getline(date, 10, '|');
-        m->setDate(turnIntoDate(date));
-        char *time = new char[9];
-        fromFile.getline(date, 8, '|');
-        m->setBeginTime(turnIntoTime(time));
-        fromFile.getline(date, 8, '|');
-        m->setEndTime(turnIntoTime(time));
-        addMeeting(*m);
-        fromFile.get();
-        delete date;
-        delete time;
-        delete buffer;
-    }
-}*/
 void personalCalendar::loadFromFile(std::ifstream &fromFile)
 {
     while (!fromFile.eof())
@@ -235,35 +197,25 @@ void personalCalendar::loadFromFile(std::ifstream &fromFile)
         Meeting m;
         char buffer[MAX_SIZE];
         // name
-        // fromFile.get();
         fromFile.getline(buffer, MAX_SIZE, '|');
-        // cout << buffer << endl;
         m.setName(buffer);
         // meetinginfo
         fromFile.getline(buffer, MAX_SIZE, '|');
-        // cout << buffer << endl;
         m.setMeetingInfo(buffer);
         // date
         char *date = new char[11];
         fromFile.getline(date, 11, '|');
-        // cout << date;
         m.setDate(turnIntoDate(date));
         // begintime
         char *time = new char[9];
         fromFile.getline(time, 9, '|');
-        // cout << time << endl;
         m.setBeginTime(turnIntoTime(time));
         // endtime
         fromFile.getline(time, 9, '\n');
-        m.setEndTime(turnIntoTime(time));
-        // cout << m;
-        addMeeting(m);
-        // cout << fromFile.get();
+        m.setEndTime(turnIntoTime(time));        
+        addMeeting(m);       
         delete date;
         delete time;
-        // delete buffer;
-        // delete m;
-        // fromFile.get();
     }
 }
 size_t personalCalendar::getMeetingCount() const
@@ -290,14 +242,12 @@ void personalCalendar::addMeeting(const Meeting &meet)
 {
     if ((mMeetingCount + 1) > (mCapacity * 3) / 4)
     {
-        // cout << "resize";
         resize();
     }
     if (!isTimeSlotTaken(meet))
     {
         mCalendar[mMeetingCount] = new Meeting(meet);
         mMeetingCount++;
-        // cout << "MeetingCount" << mMeetingCount << '\n';
     }
     else
     {
@@ -305,7 +255,6 @@ void personalCalendar::addMeeting(const Meeting &meet)
     }
     if (mMeetingCount > 1)
     {
-        // cout << "probva swap";
         sort();
     }
 }
@@ -317,12 +266,10 @@ bool personalCalendar::isTimeSlotTaken(const Meeting &other) const
         {
             if ((other.getBeginTime() > (*mCalendar[i]).getBeginTime() || other.getBeginTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > other.getBeginTime() || (*mCalendar[i]).getEndTime() == other.getBeginTime()))
             {
-                // cout << "true1" << endl;
                 return true;
             }
             if ((other.getEndTime() > (*mCalendar[i]).getBeginTime() || other.getEndTime() == (*mCalendar[i]).getBeginTime()) && ((*mCalendar[i]).getEndTime() > other.getEndTime() || (*mCalendar[i]).getEndTime() == other.getEndTime()))
             {
-                // cout << "true2" << endl;
                 return true;
             }
         }
@@ -365,9 +312,6 @@ void personalCalendar::cancelMeeting()
         if (*mCalendar[i] == *temp)
         {
             mCalendar[i] = nullptr;
-
-            // cout << endl
-            //      << mMeetingCount;
         }
     }
     sort();
@@ -389,7 +333,6 @@ void personalCalendar::changeMeeting()
 {
     cout << "Enter the details of the meeting you want to change: " << endl;
     Meeting tempMeet(enterMeeting());
-    // printMeeting(tempMeet);
     int index = findElement(tempMeet);
     cout << "Enter the information you would like to change: " << endl;
     cout << "The options are: " << endl
@@ -408,7 +351,6 @@ void personalCalendar::changeMeeting()
         cout << "Enter the new meeting info: " << endl;
         char *meetinginfo = new char[MAX_SIZE];
         cin.getline(meetinginfo, MAX_SIZE);
-        // cout << meetinginfo;
         (*mCalendar[index]).setMeetingInfo(meetinginfo);
     }
     if (strcmp("Meeting date", temp) == 0)
@@ -568,7 +510,6 @@ void personalCalendar::findFreeTimeSlot(const Date &periodBegin, const Date &per
     Date periodBeginCopy = periodBegin;
     Date periodEndCopy = periodEnd;
     bool isThereTimeSlot = false;
-    // cout << isThereTimeSlot;
     periodEndCopy.nextDay();
     int decrementCounter = 0;
     while (!(periodBeginCopy == periodEndCopy))
@@ -594,8 +535,6 @@ void personalCalendar::findFreeTimeSlot(const Date &periodBegin, const Date &per
                             cout << "##########################" << endl;
                             if (!isThereTimeSlot)
                                 isThereTimeSlot = true;
-                            // decrementCounter++;
-                            // cout << isThereTimeSlot;
                         }
                     }
                 }
