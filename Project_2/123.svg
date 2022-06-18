@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 1200 400" version="1.1">
+
+<!-- <line x1="0" y1="0" x2="300" y2="300" stroke="green"/> -->
+
+<!-- <circle cx="250" cy="230" r="75" fill="white" stroke="black" /> -->
+
+<rect x="200" y="200" height="200" width="400" fill="red" stroke="black" />
+<rect x="175" y="175" height="60" width="80" fill="pink" stroke="black" />
+<!-- <circle cx="220" cy="220.3" r="100" fill="#ffffff" stroke="#ff002b"/>
+
+<circle cx="220" cy="220.3" r="1" fill="#ff0000"/>
+<circle cx="250" cy="230" r="1" fill="#000000"/> -->
+
+</svg>
