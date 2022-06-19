@@ -14,8 +14,22 @@ double Shape::getY()
 {
     return mY;
 }
+void Shape::setX(double x)
+{
+    if (x < 0)
+        mX = 0;
+    else
+        mX = x;
+}
+void Shape::setY(double y)
+{
+    if (y < 0)
+        mY = 0;
+    else
+        mY = y;
+}
 Shape::Shape(double x, double y)
 {
-    mX = x;
-    mY = y;
+    mX = abs(x);
+    mY = abs(y);
 }

@@ -11,6 +11,7 @@ private:
 
 public:
     void print() override;
+    void translate(size_t index, double vertTransl, double horizTransl) override;
     bool isWithinCircle(double x, double y, double r) override;
     bool isWithinRect(double x, double y, double height, double width) override;
     Circle() = default;

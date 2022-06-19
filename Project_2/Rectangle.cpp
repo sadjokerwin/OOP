@@ -7,6 +7,11 @@ void Rectangle::print()
     cout << "The rectangle has coordinates for upper left corner - (" << getX() << "," << getY() << ")"
          << ", height of  " << mHeight << ", width of " << mWidth << " and is " << mColour << "in colour." << endl;
 }
+void Rectangle::translate(size_t index, double vertTransl, double horizTransl)
+{
+    setX(getX() + horizTransl);
+    setY(getY() + vertTransl);
+}
 bool Rectangle::isWithinCircle(double x, double y, double r)
 {
     return (r >= lengthBtwn2points(x, y, getX(), getY())) &&

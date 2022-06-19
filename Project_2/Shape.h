@@ -12,10 +12,13 @@ protected:
 
 public:
     virtual void print() = 0;
+    virtual void translate(size_t index, double vertTransl, double horizTransl) = 0;
     virtual bool isWithinCircle(double x, double y, double r) = 0;
     virtual bool isWithinRect(double x, double y, double height, double width) = 0;
     double getX();
     double getY();
+    void setX(double x);
+    void setY(double y);
     Shape() = default;
     Shape(double x, double y);
     // virtual ~Shape();

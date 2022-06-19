@@ -1,7 +1,8 @@
 #include "MyString.h"
 #include <cstring>
 #include <iostream>
-using namespace std;
+#include <iomanip>
+// using namespace std;
 void MyString::copyFrom(const MyString &other)
 {
     size = other.size;
@@ -108,9 +109,10 @@ MyString &MyString::operator+=(const MyString &other)
     concat(other);
     return *this;
 }
-std::ostream &operator<<(std::ostream &out, const MyString &other)
+std::ostream &operator<<(std::ostream& out, const MyString &other)
 {
-    return out << other;
+    out << other.str;
+    return out;
 }
 std::istream &operator>>(std::istream &in, MyString &other)
 {

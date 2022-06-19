@@ -25,8 +25,8 @@ public:
     MyString &operator=(MyString &&other);
     MyString &operator+=(const MyString &other);
 
-    friend std::ostream &operator<<(std::ostream &stream, const MyString &str);
-    friend std::istream &operator>>(std::istream &stream, MyString &str);
+    friend std::ostream &operator<<(std::ostream &out, const MyString &other);
+    friend std::istream &operator>>(std::istream &in, MyString &other);
 
     ~MyString();
 };
