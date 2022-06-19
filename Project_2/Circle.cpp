@@ -6,12 +6,21 @@ bool Circle::isValid(double x, double y, double r)
 {
     return (x - r) > 0 || (y - r) > 0;
 }
+Shape *Circle::clone() const
+{
+    Shape *cloneObj = new Circle(*this);
+    return cloneObj;
+}
 void Circle::print()
 {
     cout << "The circle has center coordinates - (" << getX() << "," << getY() << ")"
-         << mR << " and is " << mColour << "in colour." << endl;
+         << mR << " and is " << mColour << " in colour." << endl;
 }
-void Circle::translate(size_t index, double vertTransl, double horizTransl)
+void Circle::saveToFile(std::ostream &out)
+{
+    out <<endl<< "<circle cx=\"" << getX() << "\" cy=\"" << getY() << "\" r=\"" << mR << "\" fill=\"" << mColour << "\" />";
+}
+void Circle::translate(double vertTransl, double horizTransl)
 {
     if (getX()+horizTransl<0)
         setX(mR);
@@ -32,6 +41,12 @@ bool Circle::isWithinRect(double x, double y, double height, double width)
            ((getX() + mR) <= x + width) &&
            ((getY() - mR) >= y) &&
            ((getY() + mR) <= y + height);
+}
+Circle::Circle():Shape()
+{
+    mR = 0;
+    mColour = "/0";
+    currType = Shape::shapeType::Circle;
 }
 Circle::Circle(double x, double y, double r, char *colour) : Shape(x, y)
 {

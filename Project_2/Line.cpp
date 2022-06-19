@@ -2,11 +2,22 @@
 #include "Line.h"
 #include <iostream>
 using namespace std;
+Shape *Line::clone() const
+{
+    Shape *cloneObj = new Line(*this);
+    return cloneObj;
+}
 void Line::print()
 {
     cout << "The line has coordinates for point A(" << getX() << "," << getY() << ")"
          << " and coordinates for point B(" << mX2 << "," << mY2 << ")"<< " and is "
          << mColour << " in colour." << endl;
+}
+void Line::saveToFile(std::ostream &out)
+{
+    out << endl
+        << "<line x1=\"" << getX() << "\" y1=\"" << getY() << "\" x2=\"" << mX2 << "\" y2=\"" << mY2 << "\" stroke=\""<<mColour<<"\" />";
+    //<line x1="200" y1="200" x2="230" y2="300"
 }
 void Line::setX2(double x)
 {
@@ -22,7 +33,7 @@ void Line::setY2(double y)
     else
         mY2 = y;
 }
-void Line::translate(size_t index, double vertTransl, double horizTransl)
+void Line::translate(double vertTransl, double horizTransl)
 {
     setX(getX() + horizTransl);
     setY(getY() + vertTransl);
@@ -43,6 +54,13 @@ bool Line::isWithinRect(double x, double y, double height, double width)
            ((mX2) <= x + width) &&
            ((mY2) >= y) &&
            ((mY2) <= y + height);
+}
+Line::Line() : Shape()
+{
+    mX2 = 0;
+    mY2 = 0;
+    mColour = "/0";
+    currType = Shape::shapeType::Line;
 }
 Line::Line(double x1, double y1, double x2, double y2, char *colour) : Shape(x1, y1)
 {

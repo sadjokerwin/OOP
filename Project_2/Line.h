@@ -10,12 +10,14 @@ private:
     MyString mColour;
 
 public:
+    Shape *clone() const override;
     void print() override;
+    void saveToFile(std::ostream &out) override;
     void setX2(double x);
     void setY2(double y);
-    void translate(size_t index = 0, double vertTransl =0 , double horizTransl = 0) override;
+    void translate(double vertTransl , double horizTransl) override;
     bool isWithinCircle(double x, double y, double r) override;
     bool isWithinRect(double x, double y, double height, double width) override;
-    Line() = default;
+    Line();
     Line(double x1, double y1, double x2, double y2, char *colour);
 };
