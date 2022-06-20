@@ -13,8 +13,21 @@ Shape *Circle::clone() const
 }
 void Circle::print()
 {
-    cout << "The circle has center coordinates - (" << getX() << "," << getY() << ")"
-         << mR << " and is " << mColour << " in colour." << endl;
+    cout << "The circle has center coordinates - (" << getX() << "," << getY() 
+    << ") a radius of "<< mR 
+    << " and is " << mColour << " in colour." << endl;
+}
+void Circle::setR(double r)
+{
+    mR = r;
+}
+void Circle::setColour(const char *colour)
+{
+    mColour = colour;
+}
+void Circle::setColour(MyString &colour)
+{
+    mColour = colour;
 }
 void Circle::saveToFile(std::ostream &out)
 {

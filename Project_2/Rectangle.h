@@ -14,10 +14,17 @@ protected:
 public:
     Shape *clone() const override;
     void print() override;
+    void setHeight(double height);
+    void setWidth(double width);
+    void setRx(double rx);
+    void setRy(double ry);
+    void setColour(const char *colour);
+    void setColour(MyString &colour);
     void saveToFile(std::ostream &out) override;
     void translate(double vertTransl, double horizTransl) override;
     bool isWithinCircle(double x, double y, double r) override;
     bool isWithinRect(double x, double y, double height, double width) override;
+
     double getHeight() const;
     double getWidth() const;
     Rectangle();

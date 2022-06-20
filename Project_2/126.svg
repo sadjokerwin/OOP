@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+<rect x="175" y="175" height="60" width="80" fill="BLACK" rx="0" ry="5.65469e+06" />
+<circle cx="220" cy="220.3" r="100" fill="black" />
+<circle cx="220" cy="220.3" r="1" fill="black" />
+<circle cx="250" cy="230" r="1" fill="black" />
+<line x1="200" y1="200" x2="230" y2="300" stroke="#ffffff" /></svg>

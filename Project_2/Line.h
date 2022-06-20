@@ -15,6 +15,8 @@ public:
     void saveToFile(std::ostream &out) override;
     void setX2(double x);
     void setY2(double y);
+    void setColour(const char *colour);
+    void setColour(MyString &colour);
     void translate(double vertTransl , double horizTransl) override;
     bool isWithinCircle(double x, double y, double r) override;
     bool isWithinRect(double x, double y, double height, double width) override;

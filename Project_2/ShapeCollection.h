@@ -13,6 +13,9 @@ class ShapeCollection
     Factory shapeFactory;
 
 public:
+    bool isCircleInFile(const char *str);
+    bool isRectInFile(const char *str);
+    bool isLineInFile(const char *str);
     ShapeCollection();
     ShapeCollection(const ShapeCollection &other);
     ShapeCollection &operator=(const ShapeCollection &other);
@@ -21,15 +24,18 @@ public:
 
     void print() const;
 
-    void addAnimal(const Shape &other);
-    void addAnimal(Shape::shapeType type);
+    void addShape(const Shape &other);
+    void addShape(Shape::shapeType type);
 
     void erase(size_t index);
     void translate(size_t index, double vertTransl, double horizTransl);
     
     void withinCircle(double x, double y, double r) const;
     void withinRect(double x, double y, double height, double width) const;
-   
 
+    bool loadData(std::ifstream& fromFile);
+
+    void save(std::ofstream &toFile);
+    
     ~ShapeCollection();
 };

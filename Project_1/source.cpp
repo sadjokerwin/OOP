@@ -5,12 +5,16 @@
 #include "Time.h"
 #include "Meeting.h"
 #include "PersonalCalendar.h"
+#include "Date.cpp"
+#include "Time.cpp"
+#include "Meeting.cpp"
+#include "PersonalCalendar.cpp"
 using namespace std;
 void runProgram()
 {
     cout << "Would you like to load information from the calendar? (Yes/No)" << endl;
-    char temp[3];
-    cin.getline(temp, 3, '\n');
+    char temp[4];
+    cin.getline(temp, 4, '\n');
     personalCalendar p;
     if (strcmp(temp, "Yes") == 0)
     {

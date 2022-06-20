@@ -12,6 +12,30 @@ void Rectangle::print()
     cout << "The rectangle has coordinates for upper left corner - (" << getX() << "," << getY() << ")"
          << ", height of  " << mHeight << ", width of " << mWidth << " and is " << mColour << " in colour." << endl;
 }
+void Rectangle::setHeight(double height)
+{
+    mHeight = height;
+}
+void Rectangle::setWidth(double width)
+{
+    mWidth = width;
+}
+void Rectangle::setRx(double rx)
+{
+    mRx = rx;
+}
+void Rectangle::setRy(double ry)
+{
+    mRy = ry;
+}
+void Rectangle::setColour(const char *colour)
+{
+    mColour = colour;
+}
+void Rectangle::setColour(MyString &colour)
+{
+    mColour = colour;
+}
 void Rectangle::saveToFile(std::ostream &out)
 {
     out << endl

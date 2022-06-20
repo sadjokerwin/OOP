@@ -12,6 +12,9 @@ private:
 public:
     Shape *clone() const override;
     void print() override;
+    void setR(double r);
+    void setColour(const char *colour);
+    void setColour(MyString& colour);
     void saveToFile(std::ostream &out) override;
     void translate(double vertTransl, double horizTransl) override;
     bool isWithinCircle(double x, double y, double r) override;

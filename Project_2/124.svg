@@ -1,0 +1,6 @@
+<rect  y="175" x="175" height="60" width="80" fill="BLACK" stroke="black" rx="0" ry="0" /> 
+<circle cx="220" cy="220.3" r="100" fill="black"/>
+<circle cx="220" cy="220.3" r="1" fill="black"/>
+<circle cx="250" cy="230" r="1" fill="black"/>
+<line x1="200" y1="200" x2="230" y2="300" stroke="white"/>
+</svg>

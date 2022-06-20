@@ -33,6 +33,14 @@ void Line::setY2(double y)
     else
         mY2 = y;
 }
+void Line::setColour(const char *colour)
+{
+    mColour = colour;
+}
+void Line::setColour(MyString &colour)
+{
+    mColour = colour;
+}
 void Line::translate(double vertTransl, double horizTransl)
 {
     setX(getX() + horizTransl);
